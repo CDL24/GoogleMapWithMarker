@@ -1,5 +1,6 @@
 package com.example.climbachiya.googlemapwithmarker;
 
+import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,9 +11,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -95,13 +99,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setMapType(1);
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(22.2587, 71.1924);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Welcome! GUJARAT (INDIA)"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng location = new LatLng(22.2587, 71.1924);
+
+        //1) ----Default marker -------
+         mMap.addMarker(new MarkerOptions().position(location).title("Welcome! GUJARAT (INDIA)"));
+        //----Default marker -------
+
+
+        //2) ------Custom Marker -------
+            // create marker
+            MarkerOptions marker = new MarkerOptions().position(new LatLng(34.1491, 76.826)).title("Welcome! J&K (INDIA)");
+            // Changing marker icon
+            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_drop_black));
+            // adding marker
+            mMap.addMarker(marker);
+        //------Custom Marker -------
+
+
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
         // Zoom in, animating the camera.
         //mMap.animateCamera(CameraUpdateFactory.zoomIn());
         // Zoom out to zoom level 10, animating with a duration of 2 seconds.
         mMap.animateCamera(CameraUpdateFactory.zoomTo(5), 2000, null);
 
+        drawRoute();
     }
+
+    private void drawRoute() {
+        //specify latitude and longitude of both source and destination
+        Polyline line = mMap.addPolyline(new PolylineOptions()
+                .add(new LatLng(22.2587, 71.1924), new LatLng(34.1491, 76.826))
+                .width(5)
+                .color(Color.RED));
+    }
+
+
 }
